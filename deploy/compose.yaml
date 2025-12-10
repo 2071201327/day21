@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:alpine3.22 # 使用 alpine 版本，体积小且稳定
+    container_name: redis-server
+    restart: no # 容器退出或服务器重启时自动重启
+    ports:
+      - "6379:6379" # 宿主机端口:容器端口
+    volumes:
+      - ./docker/redis/data:/data # 将数据挂载到当前目录下的 data 文件夹，防止重启丢失数据
+    command:
+      # 启动命令：
+      # --requirepass: 设置密码 (这里设为 123456，请自行修改)
+      # --appendonly yes: 开启 AOF 持久化 (推荐开启，比默认的 RDB 数据更安全)
+      redis-server --appendonly yes
+    networks:
+      - app-network
+  mysql:
+    image: mysql:8.0              # 使用官方MySQL 8.0镜像
+    container_name: mysql_server  # 容器名称，可自定义
+    restart: no           # 容器异常退出后自动重启
+    environment:
+      MYSQL_ROOT_PASSWORD: zhangxiao          # root用户密码（必填）
+      MYSQL_DATABASE: day21        # 初始化要创建的数据库名
+      MYSQL_USER: zhangxiao                # 初始化时要创建的普通用户
+      MYSQL_PASSWORD: zhangxiao         # 上述普通用户的密码
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"          # 将主机的3306端口映射到容器
+    volumes:
+      - ./docker/mysql:/var/lib/mysql            # 数据持久化，避免重启丢失
+      - ./docker/mysql:/etc/mysql/mysql.d
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

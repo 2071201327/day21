@@ -8,6 +8,9 @@ create table userinfo
     role      tinyint     not null
 );
 
+insert into userinfo(id, mobile, password, real_name, role)
+VALUES (1, '15231700000', 'root', 'root', 2);
+
 create table `order`
 (
     id      int auto_increment
