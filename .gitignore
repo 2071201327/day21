@@ -1,6 +1,9 @@
 .venv
 .idea
 .DS_Store
+.env
+*.pyc
+__pycache__/
 
 day21/__pycache__
 day21/views/__pycache__
