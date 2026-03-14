@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session
+from werkzeug import Response
 from utils.db import fetch_one
 import logging
 
@@ -34,7 +35,7 @@ def login():
             "id": user_dict["id"]
         }
         logger.info(f"User {user_dict['id']} logged in as role {role}")
-        return redirect('/order/list')
+        return Response(headers={"Location": "/order/list"}, status=303)
     
     return render_template("login.html", error="用户名/密码错误")
 

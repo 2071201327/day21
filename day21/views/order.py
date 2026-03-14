@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 od = Blueprint('order', __name__)
 
-@od.route('/order/list')
+@od.route('/order/list', methods=['GET', 'POST'])
 def order_list():
     user_info = session.get('user_info')
     if not user_info:

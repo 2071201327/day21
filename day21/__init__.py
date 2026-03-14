@@ -14,12 +14,14 @@ def auth():
     
     if request.path == '/login':
         return
-
+    
     user_info = session.get('user_info')
     if user_info:
         return
     
-    logger.warning(f"Unauthorized access attempt: {request.path}")
+    if request.method == 'GET':
+        return redirect('/login')
+    
     return redirect('/login')
 
 def get_real_name():
